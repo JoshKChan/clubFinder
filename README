@@ -1,0 +1,10 @@
+Using the embedded in-memory H2 database
+----------------------------------------
+Go to:
+    localhost:8080/h2-console
+Then ensure that the following properties are set:
+    Driver Class: org.h2.Driver
+    JDBC URL: jdbc:h2:mem:testdb
+
+
+
