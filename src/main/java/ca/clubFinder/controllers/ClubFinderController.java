@@ -3,6 +3,7 @@ package ca.clubFinder.controllers;
 import ca.clubFinder.club.Club;
 import ca.clubFinder.event.ClubEvent;
 import ca.clubFinder.repositories.ClubRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+@Slf4j
 @RestController
 public class ClubFinderController {
 
@@ -26,6 +28,7 @@ public class ClubFinderController {
 
     @RequestMapping(path = "/clubs", method = POST)
     public Club newClub(@RequestParam String name) {
+        log.info("Adding new club, {}", name);
         Club club = new Club();
         club.setName(name);
         return clubRepository.save(club);
