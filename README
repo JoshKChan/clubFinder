@@ -1,3 +1,8 @@
+Accessing the Swagger Documentation
+-----------------------------------
+http://localhost:8080/swagger-ui.html#/
+
+
 Using the embedded in-memory H2 database
 ----------------------------------------
 Go to:
