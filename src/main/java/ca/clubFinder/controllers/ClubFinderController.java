@@ -5,13 +5,12 @@ import ca.clubFinder.event.ClubEvent;
 import ca.clubFinder.repositories.ClubRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.atomic.AtomicLong;
-
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Slf4j
 @RestController
@@ -21,12 +20,12 @@ public class ClubFinderController {
     private ClubRepository clubRepository;
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/clubs")
+    @GetMapping("/clubs")
     public Iterable<Club> clubs() {
         return clubRepository.findAll();
     }
 
-    @RequestMapping(path = "/clubs", method = POST)
+    @PostMapping(path = "/clubs")
     public Club newClub(@RequestParam String name) {
         log.info("Adding new club, {}", name);
         Club club = new Club();
@@ -34,7 +33,7 @@ public class ClubFinderController {
         return clubRepository.save(club);
     }
 
-    @RequestMapping("/event")
+    @GetMapping("/event")
     public ClubEvent event(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new ClubEvent(counter.incrementAndGet(), name);
     }
