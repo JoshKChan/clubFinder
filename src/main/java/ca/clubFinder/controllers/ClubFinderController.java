@@ -1,14 +1,12 @@
 package ca.clubFinder.controllers;
 
 import ca.clubFinder.club.Club;
+import ca.clubFinder.club.ClubProperties;
 import ca.clubFinder.event.ClubEvent;
 import ca.clubFinder.repositories.ClubRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,12 +23,26 @@ public class ClubFinderController {
         return clubRepository.findAll();
     }
 
-    @PostMapping(path = "/clubs")
-    public Club newClub(@RequestParam String name) {
-        log.info("Adding new club, {}", name);
+    @PostMapping(path = "/clubs/new")
+    public Club newClub(@RequestBody ClubProperties clubProps) {
         Club club = new Club();
-        club.setName(name);
+        club.setName(clubProps.getName());
+        club.setDescription(clubProps.getDescription());
+        Club newClub = clubRepository.save(club);
+        log.info("Adding new club, ID: {}, {}", club.getId(), club.getName());
+        return newClub;
+    }
+
+    @PostMapping(path = "/clubs/update")
+    public Club updateClub(@RequestBody Club club) {
+        log.info("Updating club, ID: {}", club.getId());
         return clubRepository.save(club);
+    }
+
+    @DeleteMapping("/clubs")
+    public void deleteClub(@RequestParam long id) {
+        log.info("Deleting club, ID:{}", id);
+        clubRepository.deleteById(id);
     }
 
     @GetMapping("/event")
