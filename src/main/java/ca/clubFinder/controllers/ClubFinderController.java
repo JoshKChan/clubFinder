@@ -1,6 +1,7 @@
 package ca.clubFinder.controllers;
 
 import ca.clubFinder.club.Club;
+import ca.clubFinder.club.ClubProperties;
 import ca.clubFinder.event.ClubEvent;
 import ca.clubFinder.repositories.ClubRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +24,24 @@ public class ClubFinderController {
     }
 
     @PostMapping(path = "/clubs/new")
-    public Club newClub(@RequestParam String name) {
-        log.info("Adding new club, {}", name);
+    public Club newClub(@RequestBody ClubProperties clubProps) {
         Club club = new Club();
-        club.setName(name);
-        return clubRepository.save(club);
+        club.setName(clubProps.getName());
+        club.setDescription(clubProps.getDescription());
+        Club newClub = clubRepository.save(club);
+        log.info("Adding new club, ID: {}, {}", club.getId(), club.getName());
+        return newClub;
     }
 
     @PostMapping(path = "/clubs/update")
     public Club updateClub(@RequestBody Club club) {
-        log.info("Updating club, {}", club.getId());
+        log.info("Updating club, ID: {}", club.getId());
         return clubRepository.save(club);
     }
 
     @DeleteMapping("/clubs")
     public void deleteClub(@RequestParam long id) {
+        log.info("Deleting club, ID:{}", id);
         clubRepository.deleteById(id);
     }
 
