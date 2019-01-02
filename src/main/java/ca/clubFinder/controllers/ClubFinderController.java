@@ -5,10 +5,7 @@ import ca.clubFinder.event.ClubEvent;
 import ca.clubFinder.repositories.ClubRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,12 +22,23 @@ public class ClubFinderController {
         return clubRepository.findAll();
     }
 
-    @PostMapping(path = "/clubs")
+    @PostMapping(path = "/clubs/new")
     public Club newClub(@RequestParam String name) {
         log.info("Adding new club, {}", name);
         Club club = new Club();
         club.setName(name);
         return clubRepository.save(club);
+    }
+
+    @PostMapping(path = "/clubs/update")
+    public Club updateClub(@RequestBody Club club) {
+        log.info("Updating club, {}", club.getId());
+        return clubRepository.save(club);
+    }
+
+    @DeleteMapping("/clubs")
+    public void deleteClub(@RequestParam long id) {
+        clubRepository.deleteById(id);
     }
 
     @GetMapping("/event")
