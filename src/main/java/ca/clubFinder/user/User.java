@@ -1,33 +1,33 @@
-package ca.clubFinder.club;
+package ca.clubFinder.user;
 
-import ca.clubFinder.user.User;
+import ca.clubFinder.club.Club;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Club {
+public class User {
     @Id
     @GeneratedValue
     private long id;
+    private String email;
     private String name;
-    private String description;
+    private String phoneNumber;
 
-    @ManyToOne
-    @JoinColumn(name="userId", nullable=false)
-    @OnDelete(action=OnDeleteAction.CASCADE)
-    private User user;
+    //@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
+    //private Set<Club> clubs;
 }
